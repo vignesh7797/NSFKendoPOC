@@ -8,12 +8,12 @@
                 [filterable]="true"
                 [height]="500" 
                 [selectable]="true"
-                [groupable]="true" 
                 [reorderable]="true"
                 [resizable]="true"
+                [columnMenu]="{ filter: true }"
                 >
     
-    <kendo-grid-checkbox-column  [showSelectAll]="true" [width]="2" [resizable]="false"></kendo-grid-checkbox-column>
+    <kendo-grid-checkbox-column  [showSelectAll]="true" [width]="2" [resizable]="false" [columnMenu]="false" ></kendo-grid-checkbox-column>
     
     <kendo-grid-column field="userId" title="User Id" [width]="10" [resizable]="true"></kendo-grid-column>
     <kendo-grid-column field="id" title="Id" [width]="10" [resizable]="true"></kendo-grid-column>
