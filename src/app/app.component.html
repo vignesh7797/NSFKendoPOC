@@ -1,6 +1,6 @@
 <div class="container">
 
-   <kendo-grid  [kendoGridBinding]="data" 
+   <kendo-grid  [data]="data" 
                 [pageSize]="10" 
                 [pageable]="true" 
                 [skip]="0"
@@ -11,6 +11,7 @@
                 [reorderable]="true"
                 [resizable]="true"
                 [columnMenu]="{ filter: true }"
+                
                 >
     
     <kendo-grid-checkbox-column  [showSelectAll]="true" [width]="2" [resizable]="false" [columnMenu]="false" ></kendo-grid-checkbox-column>
@@ -29,3 +30,60 @@
 
   
 </div>
+<br>
+<hr>
+<br>
+
+<section>
+
+  <kendo-grid [data]="data2" 
+              [pageSize]="10" 
+              [pageable]="true" 
+              [skip]="0" 
+              [sortable]="true" 
+              [filterable]="true" 
+              [height]="500"
+              (dataStateChange)="onStateChange($event)"
+              (edit)="editHandler($event)"
+              (cancel)="cancelHandler($event)"
+              (save)="saveHandler($event)"
+              (add)="addHandler($event)"
+              (remove)="removeHandler($event)"
+              [navigable]="true">
+    
+    <ng-template kendoGridToolbarTemplate>
+        <button kendoGridAddCommand>Add new</button>
+    </ng-template>
+    
+    <kendo-grid-column field="id" title="Id" [width]="2"></kendo-grid-column>
+    <kendo-grid-column field="name" title="Name" [width]="10" [style]="{'text-transform': 'capitalize'}"></kendo-grid-column>
+    <kendo-grid-column field="gender" title="Gender" [width]="5" [style]="{'text-align':'center'}"></kendo-grid-column>
+    <kendo-grid-column field="phone" title="Phone" [width]="5"></kendo-grid-column>
+    <kendo-grid-column field="target" title="Target" [width]="10">
+      <ng-template kendoGridCellTemplate let-item>
+        <kendo-sparkline type="bar" [data]="item.target" [tooltip]="{visible: false}" [transitions]="true"
+          [seriesDefaults]="{labels: {background: 'none', visible: true, format: '{0}%'}}">
+          <kendo-chart-area [opacity]="0" [width]="200"></kendo-chart-area>
+          <kendo-chart-value-axis>
+            <kendo-chart-value-axis-item [min]="0" [max]="130">
+            </kendo-chart-value-axis-item>
+          </kendo-chart-value-axis>
+        </kendo-sparkline>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="budget" title="Budget" [width]="10">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <span [ngClass]="{'red text-bold': dataItem.budget < 0}">{{ dataItem.budget | currency }}</span>
+      </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-command-column title="Command" [width]="15">
+      <ng-template kendoGridCellTemplate let-isNew="isNew">
+        <button kendoGridEditCommand [primary]="true">Edit</button>
+                <button kendoGridRemoveCommand>Remove</button>
+                <button kendoGridSaveCommand [disabled]="formGroup.invalid">{{ isNew ? 'Add' : 'Update' }}</button>
+                <button kendoGridCancelCommand>{{ isNew ? 'Discard changes' : 'Cancel' }}</button>
+      </ng-template>
+    </kendo-grid-command-column>
+  </kendo-grid>
+</section>

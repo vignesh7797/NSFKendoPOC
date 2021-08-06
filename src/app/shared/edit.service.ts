@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap, map } from "rxjs/operators";
+import { ProjectService } from './project.service';
 
 const CREATE_ACTION ="create";
 const UPDATE_ACTION ="update";
@@ -12,7 +13,7 @@ const REMOVE_ACTION ="destroy";
 })
 export class EditService extends BehaviorSubject<any[]>{
 
-  constructor(private http:HttpClient) {
+  constructor(private http:HttpClient, private projectService:ProjectService) {
     super([]);
    }
 
@@ -71,11 +72,13 @@ export class EditService extends BehaviorSubject<any[]>{
    }
 
    private fetch(action:string='', data?:any):Observable<any[]>{
-      return this.http.get(`https://jsonplaceholder.typicode.com/todos?${this.serializeModels(data)}`).pipe(map(res => <any[]> res))
+     let project:any;
+    this.projectService.getProject().subscribe(pro =>{
+      project =pro;
+    });
+      return project;
    }
 
-   private serializeModels(data?: any): string {
-    return data ? `&models=${JSON.stringify([data])}` : "";
-  }
+
   
 }
